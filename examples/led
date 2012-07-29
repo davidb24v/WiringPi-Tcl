@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Restart using Tcl\
+exec tclsh "$0" "$@"
+
+package require wiringpi
+
+wiringPiSetup
+
+# Define pins for some LEDs
+set RED {0 1 2}
+set YELLOW {3 4 5}
+set GREEN {6 7 8}
+set ALL [concat $RED $YELLOW $GREEN]
+set NLEDS [llength $ALL]
+
+# All pins are for output
+mode $ALL $OUTPUT
+
+# Pick a delay...
+set DELAY 250
+
+# switch on
+on $RED
+delay $DELAY
+on $YELLOW
+delay $DELAY
+on $GREEN
+delay $DELAY
+
+# Now randomly turn LEDs on and off
+off $ALL
+set delay 25
+for {set rpt 0} {$rpt < 250} {incr rpt} {
+  set led [expr {int(rand()*$NLEDS+0.5)}]
+  on $led
+  delay $delay
+  off $led
+  delay $delay
+}
+
+
+delay $DELAY
+off $ALL

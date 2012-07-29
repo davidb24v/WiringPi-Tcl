@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Restart using Tcl\
+exec tclsh "$0" "$@"
+
+package require wiringpi
+
+wiringPiSetup
+
+pinMode 1 $PWM_OUTPUT
+
+while { 1 } {
+
+  for {set bright 0} {$bright < 1024} {incr bright} {
+    pwmWrite 1 $bright
+    delay 1
+  }
+  
+  for {set bright 1023} {$bright >= 0} {incr bright -1} {
+    pwmWrite 1 $bright
+    delay 1
+  }
+}
