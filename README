@@ -1,0 +1,34 @@
+Tcl wrappers for Gordon't WiringPi Library
+
+Uses Gadgetoid's wiringpi.i, modified to remove explicit paths and use the version of WiringPi installed on the system.
+
+You will need swig and tcl-devel installed.
+
+To build, just run:
+
+./build
+
+And the Tcl extension will be built and installed to the first available directory in Tcl's auto_path
+
+Just add "package require wiringpi" at the start of your tcl script to use it
+
+Global variables are created to match some of Gordon's #defines:
+
+pinMode:
+INPUT, OUTPUT and PWM_OUTPUT
+
+digitalWrite:
+LOW and HIGH
+
+The following Tcl commands are also defined for convenience:
+
+mode <pins> <mode> : calls pinMode to set the mode for each pin in a list of pins
+on <pins>          : Sets each pin in a list of pins to HIGH
+off <pins>         : Sets each pin in list of pins to LOW
+
+flash <pins> [delay 100] [repeat 1] : Set the pins HIGH and LOW with an optional delay (default 100ms) and optional repeat
+
+Enjoy!
+
+Dave
+

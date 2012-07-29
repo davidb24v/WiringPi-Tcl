@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Restart using tclsh\
+exec tclsh "$0" "$@"
+
+set PKG_VERSION 1.0
+
+proc main { } {
+  global PKG_VERSION
+
+  cmd swig -tcl -pkgversion $PKG_VERSION wiringpi.i
+
+  cmd gcc -shared wiringpi_wrap.c -I/usr/include/tcl \
+          -L/usr/local/lib -lwiringPi  -o wiringpi.so
+
+  puts "Making pkgIndex"
+  pkg_mkIndex . wiringpi.so *.tcl
+
+  puts "Installing..."
+  foreach dir $::auto_path {
+    if { [file isdirectory $dir] } {
+      puts " Using $dir"
+      set target [file join $dir wiringpi$PKG_VERSION]
+      puts "    Creating $target"
+      file mkdir $target
+      puts "    wiringpi.so -> [file join $target wiringpi.so]"
+      file copy -force wiringpi.so $target
+      puts "    pkgIndex.tcl -> [file join $target pkgIndex.tcl]"
+      file copy -force pkgIndex.tcl $target
+      puts "    utils.tcl -> [file join $target utils.tcl]"
+      file copy -force utils.tcl $target
+      puts "done"
+      break
+    }
+  }
+}
+
+proc cmd { args } {
+  puts -nonewline "Running: $args ... "
+  flush stdout
+  if { [catch "eval exec $args" result] } {
+    puts "FAILED!"
+    puts "Message was:"
+    puts "$result"
+    exit 1
+  } else {
+    puts " ok"
+  }
+}
+
+main
