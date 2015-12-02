@@ -30,13 +30,6 @@ extern int wiringPiSPIGetFd (int channel) ;
 extern int wiringPiSPIDataRW (int channel, unsigned char *data, int len) ;
 extern int wiringPiSPISetup (int channel, int speed) ;
 
-extern void gertboardAnalogWrite (int chan, int value) ;
-extern int gertboardAnalogRead (int chan) ;
-extern int gertboardSPISetup (void) ;
-
-extern int setupNesJoystick (int dPin, int cPin, int lPin) ;
-extern unsigned int readNesJoystick (int joystick) ;
-
 extern int softPwmCreate (int pin, int value, int range) ;
 extern void softPwmWrite (int pin, int value) ;
 
@@ -44,9 +37,7 @@ extern void softPwmWrite (int pin, int value) ;
 #include "wiringPi.h"
 #include "wiringShift.h"
 #include "wiringSerial.h"
-#include "gertboard.h"
 #include "wiringPiSPI.h"
 #include "softPwm.h"
-#include "piNes.h"
 #include "lcd.h"
 %}
